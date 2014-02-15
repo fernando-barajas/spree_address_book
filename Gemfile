@@ -1,9 +1,13 @@
 source "http://rubygems.org"
 gemspec
 
+gem 'pry'
+gem 'rails-pry'
+
 group :test do
-  gem 'sass-rails',   '~> 3.2.5'
-  gem 'coffee-rails', '~> 3.2.1'
+  gem 'sass-rails',   '~> 4.0.0'
+  gem 'coffee-rails', '~> 4.0.0'
+  gem 'selenium-webdriver'
 
   if RUBY_PLATFORM.downcase.include? "darwin"
     gem 'rb-fsevent'
@@ -14,5 +18,5 @@ end
 
 gem 'devise'
 gem 'devise-encryptable'
-gem 'spree_auth_devise', :git => 'git://github.com/spree/spree_auth_devise'
-gem 'spree', '~> 1.2.1'
+gem 'spree_auth_devise', :git => 'git://github.com/spree/spree_auth_devise', :branch => '2-1-stable'
+gem 'spree', '2.1.4'

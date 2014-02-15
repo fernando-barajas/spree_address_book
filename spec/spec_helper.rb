@@ -1,5 +1,17 @@
+# Run Coverage report
+require 'simplecov'
+SimpleCov.start do
+  add_filter 'spec/dummy'
+  add_group 'Controllers', 'app/controllers'
+  add_group 'Helpers', 'app/helpers'
+  add_group 'Mailers', 'app/mailers'
+  add_group 'Models', 'app/model'
+  add_group 'Views', 'app/views'
+  add_group 'Libraries', 'lib'
+end
+
 # Configure Rails Environment
-ENV["RAILS_ENV"] ||= "test"
+ENV["RAILS_ENV"] = "test"
 
 require File.expand_path("../dummy/config/environment.rb",  __FILE__)
 
@@ -9,17 +21,19 @@ require 'ffaker'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[File.join(File.dirname(__FILE__), "support/**/*.rb")].each {|f| require f }
+Dir[File.join(File.dirname(__FILE__), "support/**/*.rb")].each { |f| require f }
 
 # Requires factories defined in spree_core
-require 'spree/core/testing_support/factories'
-require 'spree/core/testing_support/env'
-require 'spree/core/url_helpers'
+require 'spree/testing_support/factories'
+require 'spree/testing_support/controller_requests'
+require 'spree/testing_support/authorization_helpers'
+require 'spree/testing_support/url_helpers'
 
 RSpec.configure do |config|
   config.mock_with :rspec
+  config.color = true
   config.use_transactional_fixtures = false
-  config.include Spree::Core::UrlHelpers
+  config.include FactoryGirl::Syntax::Methods
 
   config.before(:each) do
     if example.metadata[:js]
@@ -48,4 +62,11 @@ RSpec.configure do |config|
   config.after(:each) do
     DatabaseCleaner.clean
   end
+
+  def sign_in!(user)
+    fill_in "Email", :with => user.email
+    fill_in "Password", :with => "secret"
+    click_button "Login"
+  end
 end
+

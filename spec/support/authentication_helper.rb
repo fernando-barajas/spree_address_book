@@ -5,7 +5,3 @@ module Authentication
     click_button "Login"
   end
 end
-
-RSpec.configure do |c|
-  c.include Authentication, :type => :request
-end
