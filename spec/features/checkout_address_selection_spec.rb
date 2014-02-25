@@ -8,6 +8,7 @@ describe "Address selection during checkout" do
 
   describe "as guest user" do
     include_context "checkout with product"
+
     before(:each) do
       stock_location.stock_items.update_all(count_on_hand: 1)
 
@@ -32,27 +33,22 @@ describe "Address selection during checkout" do
 
   describe "as authenticated user with saved addresses", :js => true do
     include_context "checkout with product"
+    include_context "user with address"
 
-    let(:billing) { FactoryGirl.build(:address, :state => state) }
+    let(:billing) { FactoryGirl.build(:address, :company => 'Company', :state => state) }
     let(:shipping) do
-      FactoryGirl.build(:address, :address1 => Faker::Address.street_address, :state => state)
+      FactoryGirl.build(:address, :address1 => Faker::Address.street_address, :company => 'Company', :state => state)
     end
 
-    let(:user) do
-      u = FactoryGirl.create(:user)
-      u.addresses << FactoryGirl.create(:address, :address1 => Faker::Address.street_address, :state => state)
-      u.save
-      u
-    end
 
     before(:each) do
       find('#checkout-link').click
-      sign_in!(user);
+      sign_in!(user)
     end
 
     it "should not see billing or shipping address form" do
-      find("#billing .inner").should_not be_visible
-      find("#shipping .inner").should_not be_visible
+      page.should have_no_css("#billing .inner", visible: true)
+      page.should have_no_css("#shipping .inner", visible: true)
     end
 
     it "should list saved addresses for billing and shipping" do
@@ -97,13 +93,11 @@ describe "Address selection during checkout" do
     end
 
     describe "when invalid address is entered", :js => true do
-      let(:address) do
-        FactoryGirl.build(:address, :firstname => nil, :state => state)
-      end
 
       # TODO the JS error reporting isn't working with our current iteration
       # this is what this piece of code ('field is required') tests
       it "should show address form with error" do
+        address.firstname = ''
         within("#billing") do
           choose I18n.t(:other_address)
           fill_in_address(address)
@@ -230,7 +224,7 @@ describe "Address selection during checkout" do
       let(:billing) do
         FactoryGirl.build(:address, :address1 => Faker::Address.street_address, :state => state)
       end
-  
+
       it "should save 1 new address for user" do
         expect do
           address = user.addresses.first

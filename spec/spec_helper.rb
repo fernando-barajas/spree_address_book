@@ -1,5 +1,6 @@
 # Run Coverage report
 require 'simplecov'
+
 SimpleCov.start do
   add_filter 'spec/dummy'
   add_group 'Controllers', 'app/controllers'
@@ -64,6 +65,7 @@ RSpec.configure do |config|
   end
 
   def sign_in!(user)
+    visit spree.login_path
     fill_in "Email", :with => user.email
     fill_in "Password", :with => "secret"
     click_button "Login"

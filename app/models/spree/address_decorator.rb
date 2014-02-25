@@ -29,9 +29,12 @@ Spree::Address.class_eval do
   def to_s
     [
       "#{firstname} #{lastname}",
+      "#{company}",
       "#{address1}",
       "#{address2}",
-      "#{city}, #{state || state_name} #{zipcode}",
+      "#{city}",
+      " #{state.abbr || state_name}",
+      "#{zipcode}",
       "#{country}"
     ].reject(&:empty?).join("<br/>").html_safe
   end

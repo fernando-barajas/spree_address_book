@@ -1,4 +1,5 @@
 shared_context "checkout with product" do
+
   before :each do
     @state = Spree::State.all.first || FactoryGirl.create(:state)
     @zone = Spree::Zone.find_by_name('GlobalZone') || FactoryGirl.create(:global_zone)
@@ -47,10 +48,9 @@ shared_context "checkout with product" do
     fill_in I18n.t(:city), :with => address.city
     fill_in I18n.t(:zip), :with => address.zipcode
     fill_in I18n.t(:phone), :with => address.phone
-    fill_in 'Alternative phone', :with => address.alternative_phone if Spree::Config[:alternative_billing_phone]
   end
 
   def expected_address_format(address)
-    Nokogiri::HTML(address.to_s).text
+    Nokogiri::HTML(address.to_s.gsub('<br/>', ' ')).text
   end
 end

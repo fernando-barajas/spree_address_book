@@ -1,4 +1,5 @@
-
+//= require store/spree_frontend
+//
 (function($) {
   $(document).ready(function(){
     if ($(".select_address").length) {
@@ -9,7 +10,7 @@
       if ($('input#order_use_billing').is(':checked')) {
         $("#shipping .select_address").hide();
       }
-      
+
       $('input#order_use_billing').click(function() {
         if ($(this).is(':checked')) {
           $("#shipping .select_address").hide();
@@ -39,13 +40,13 @@
       });
     }
   });
-  
+
   function hide_address_form(address_type){
     $("#" + address_type + " .inner").hide();
     $("#" + address_type + " .inner input").prop("disabled", true);
     $("#" + address_type + " .inner select").prop("disabled", true);
   }
-  
+
   function show_address_form(address_type){
     $("#" + address_type + " .inner").show();
     $("#" + address_type + " .inner input").prop("disabled", false);

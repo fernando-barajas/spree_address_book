@@ -15,5 +15,10 @@ en:
     successfully_updated: "Updated successfully"
     unsuccessfully_updated: "There was an update while trying to update your address."
     save: "Save"
+  city: City
+  first_name: First Name
+  my_account: My Account
+  other_address: Other address
   phone: Phone
+  save_and_continue: Save and Continue
   zip: Zip

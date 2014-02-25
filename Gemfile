@@ -3,6 +3,7 @@ gemspec
 
 gem 'pry'
 gem 'rails-pry'
+gem 'pry-debugger'
 
 group :test do
   gem 'sass-rails',   '~> 4.0.0'
